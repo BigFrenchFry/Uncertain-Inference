@@ -1,2 +1,1 @@
-Uncertain-Inference
-UR CSC 242 project 3 - Uncertain Inference.
+UR CSC 242 Uncertain inference project
