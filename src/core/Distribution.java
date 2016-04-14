@@ -73,5 +73,12 @@ public class Distribution extends LinkedHashMap<Object,Double> {
 	    put(key, get(key).doubleValue()/sum);
 	}
     }
+    
+    public void initialize(X) {
 
+        for (Object o : X.getDomain()) {
+            this.put(o, 0);
+        }
+        return;
+    }
 }

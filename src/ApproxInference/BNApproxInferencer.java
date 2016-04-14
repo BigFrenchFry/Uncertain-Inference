@@ -13,7 +13,7 @@ public class BNApproxInferencer {
 		XMLBIFParser x = new XMLBIFParser();
 		GibbsAsk wat = new GibbsAsk();
 		try {
-            int samples = argv[0];
+            int samples = Integer.parseInt(argv[0]);
 			BayesianNetwork bn = x.readNetworkFromFile(argv[1]);
 			Assignment e = new Assignment();
 			for(int i = 3; i < argv.length; i+=2){
