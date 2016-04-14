@@ -159,6 +159,12 @@ public class BayesianNetwork {
 	}
 	throw new NoSuchElementException();
     }
+    /**
+     * Returns the CPT for the node with the given RandomVariable
+     */
+    public CPT getCPTForVariable(RandomVariable var) {
+    	return getNodeForVariable(var).cpt;
+    }
 
     /**
      * Return the RandomVariable with the given name from this BayesianNewtork.
