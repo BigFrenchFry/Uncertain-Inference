@@ -72,7 +72,7 @@ public class GibbsAsk {
                 // set value of Z_j in state by sampling from P(Z_j | mb(Z_j))
                 Object value = sampleCondDist(bn, z, state);
                 state.put(z, value); 
-                xCounts.replace(state.get(X), (xCounts.get(state.get(X))+1.0)); 
+                xCounts.put(state.get(X), (xCounts.get(state.get(X))+1.0)); 
             }
 	    }	
         // might have to change Q from freqs. to rel. freqs. 
