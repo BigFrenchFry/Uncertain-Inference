@@ -1,48 +1,47 @@
-package Inference;
-import java.util.List;
+package ApproxInference;
 import java.util.ArrayList;
-import java.util.Map.Entry;
+import java.util.Random;
 
 import core.Assignment;
 import core.BayesianNetwork;
+import core.BayesianNetwork.Node;
 import core.Distribution;
 import core.RandomVariable;
 
+
 public class GibbsAsk {
 	
-    private ArrayList<RandomVariable> getMB(BayesianNetwork bn, RandomVariable z) {
+	Random rand = new Random();
 
-        ArrayList<RandomVariable> mb = new ArrayList<RandomVariable>();
-        mb.addAll(bn.getNodeForVariable(z).parents);
-        ArrayList<RandomVariable> children = new ArrayList<RandomVariable>();
-        children.addAll(bn.getNodeForVariable(z).children);
-        for (RandomVariable child : children) {
-            ArrayList<RandomVariable> babyDaddies = new ArrayList<RandomVariable>();
-            babyDaddy.addAll(bn.getNodeForVariable(child).parents);
-            for (RandomVariable dad : babyDaddies) {
-                if (!mb.contains(dad)) {
-                    mb.add(dad);
-                }
-            }
+    private Object sampleCondDist (BayesianNetwork bn, RandomVariable z, Assignment x) {
+    	
+    	Distribution xCounts = new Distribution(z);
+        xCounts.initialize(z);
+        
+        double sum = 0;
+        Assignment xCopy = x.copy();
+        for (Object o : z.getDomain()){
+        	xCopy.set(z, o);
+        	double product = bn.getProb(z, xCopy);
+        	for (Node node : bn.getNodeForVariable(z).children){
+        		product *= bn.getProb(node.variable, xCopy);
+        	}
+        	xCounts.put(o,product);
         }
-        mb.addAll(children);
-        return mb; 
+        xCounts.normalize();
+        
+        for (Object o : z.getDomain()){
+        	xCopy.set(z, o);
+        	sum += xCounts.get(o);
+        	
+        	if (rand.nextDouble() <= sum){
+        		return o;
+        	}
+        }
+        return null;
     }
 
-    private Object sampleCondDist (BayesianNetwork bn, RandomVariable z,
-            ArrayList<RandomVariable> mb) {
-
-        Object output;
-
-        Assignment 
-        // Somehow make a CPT for z using the markov blanket (P(z | mb)) 
-        // Somehow get a switch on domain elements' probabilities  to route a randomly 
-        //  generated number to return the right domain element
-
-        return output;
-    }
-
-	public Distribution ask(BayesianNetwork bn, RandomVariable X, Assignment e, int N) {
+	public Distribution ask(int N, BayesianNetwork bn, RandomVariable X, Assignment e) {
          
         // Initialize local variables
         // N: Vector of counts for each value of X
@@ -60,42 +59,25 @@ public class GibbsAsk {
                 nonEVars.remove(k);
             }
         }
-        nonEVars.remove(X);
+        //nonEVars.remove(X);
 
         // x: state of network, copied from e
-        Assignment state = e.clone;
-        Random rand = new Random();
+        Assignment state = e.copy();
         for (RandomVariable z : nonEVars) {
-            state.put(z,z.getDomain().get((int) rand.nextDouble()*z.getDomain().size()));
+            state.put(z,z.getDomain().get(rand.nextInt(z.getDomain().size())));
         }
 
 		for (int i = 0; i < N; i++) {  
-			for (RandomVariable z : nonEvars) {
+			for (RandomVariable z : nonEVars) {
                 // set value of Z_j in state by sampling from P(Z_j | mb(Z_j))
-                Object value = sampleCondDist(bn, z, getMB(bn, z));
+                Object value = sampleCondDist(bn, z, state);
                 state.put(z, value); 
-                xCounts.replace(value, (xCounts.get(value)+1.0)); 
+                xCounts.replace(state.get(X), (xCounts.get(state.get(X))+1.0)); 
             }
 	    }	
         // might have to change Q from freqs. to rel. freqs. 
         // Q.normalize() might do just that
-		Q.normalize();
-		return Q; 
+		xCounts.normalize();
+		return xCounts; 
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
