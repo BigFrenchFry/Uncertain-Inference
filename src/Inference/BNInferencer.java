@@ -6,7 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import core.*;
-import Parser.*;
+import parser.*;
 
 public class BNInferencer {
 	public static void main(String[] argv){

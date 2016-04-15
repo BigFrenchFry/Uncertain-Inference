@@ -74,11 +74,12 @@ public class Distribution extends LinkedHashMap<Object,Double> {
 	}
     }
     
-    public void initialize(X) {
+    public void initialize(RandomVariable X) {
 
         for (Object o : X.getDomain()) {
             this.put(o, 0);
         }
-        return;
     }
+    
+
 }

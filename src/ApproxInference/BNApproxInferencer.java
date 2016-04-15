@@ -1,4 +1,4 @@
-package Inference;
+package ApproxInference;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -6,12 +6,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import core.*;
-import Parser.*;
+import parser.*;
 
 public class BNApproxInferencer {
 	public static void main(String[] argv){
 		XMLBIFParser x = new XMLBIFParser();
-		GibbsAsk wat = new GibbsAsk();
+		RejectionSampling wat = new RejectionSampling();
+		GibbsAsk wat2 = new GibbsAsk();
 		try {
             int samples = Integer.parseInt(argv[0]);
 			BayesianNetwork bn = x.readNetworkFromFile(argv[1]);
@@ -19,7 +20,7 @@ public class BNApproxInferencer {
 			for(int i = 3; i < argv.length; i+=2){
 				e.put(bn.getVariableByName(argv[i]), argv[i+1]);
 			}
-			Distribution dist = wat.ask(bn, bn.getVariableByName(argv[2]), e);
+			Distribution dist = wat2.ask(samples,bn, bn.getVariableByName(argv[2]), e);
 			System.out.println(dist);
 		} catch (IOException e) {
 			e.printStackTrace();
