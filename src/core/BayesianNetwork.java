@@ -32,7 +32,7 @@ public class BayesianNetwork {
      * corresponds to a random variable, and has parent nodes, child
      * nodes, and a conditional probability table associated with it.
      */
-    protected class Node implements Printable {
+    public class Node implements Printable {
 
 	public RandomVariable variable;
 	public List<Node> parents;
@@ -56,7 +56,7 @@ public class BayesianNetwork {
 	 * Print this Node to the given PrintWriter at the given
 	 * indent level.
 	 */
-	protected void print(PrintWriter out, int indent) {
+	public void print(PrintWriter out, int indent) {
 	    for (int i=0; i < indent; i++) {
 		out.print(" ");
 	    }
@@ -104,12 +104,6 @@ public class BayesianNetwork {
 
     }
     
-    
-//////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    
-    
-    
     /**
      * Construct and return a new (empty) BayesianNetwork.
      */
@@ -151,7 +145,7 @@ public class BayesianNetwork {
      * Return the Node for given RandomVariable from this BayesianNetwork.
      * @throws NoSuchElementException
      */
-    protected Node getNodeForVariable(RandomVariable var) {
+    public Node getNodeForVariable(RandomVariable var) {
 	for (Node node : nodes) {
 	    if (node.variable == var) {
 		return node;
@@ -159,6 +153,7 @@ public class BayesianNetwork {
 	}
 	throw new NoSuchElementException();
     }
+    
     /**
      * Returns the CPT for the node with the given RandomVariable
      */
@@ -369,4 +364,5 @@ public class BayesianNetwork {
 	network.connect(A, givens, cpt);
 	network.print(System.out);
     }
+
 }
